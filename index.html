@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>金融科技題庫練習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F5F7; --surface:#FFFFFF; --ink:#14262F; --muted:#5B6E78; --line:#D9E1E6;
+  --accent:#0F5E7A; --accent-ink:#FFFFFF; --accent-soft:#E2F0F5;
+  --ok:#17794F; --ok-bg:#E3F4EC; --bad:#B83A2E; --bad-bg:#FBE9E6;
+  --star:#E5A100; --star-off:#C5CFD5; --shadow:0 1px 2px rgba(20,38,47,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E181E; --surface:#16242C; --ink:#E6EEF2; --muted:#93A6B0; --line:#2A3C46;
+    --accent:#5BB8D6; --accent-ink:#0E181E; --accent-soft:#1B3440;
+    --ok:#5CCB93; --ok-bg:#15332A; --bad:#FF8A7C; --bad-bg:#3A1D1A;
+    --star:#F2B72E; --star-off:#44575F; --shadow:none;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E181E; --surface:#16242C; --ink:#E6EEF2; --muted:#93A6B0; --line:#2A3C46;
+  --accent:#5BB8D6; --accent-ink:#0E181E; --accent-soft:#1B3440;
+  --ok:#5CCB93; --ok-bg:#15332A; --bad:#FF8A7C; --bad-bg:#3A1D1A;
+  --star:#F2B72E; --star-off:#44575F; --shadow:none;
+  color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3,p,ol{margin:0}
+ol{padding:0;list-style:none}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:720px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{font-weight:700;font-size:1.05rem;padding:8px 4px}
+.top nav{display:flex;gap:4px;align-items:center}
+.nbtn{padding:8px 12px;border-radius:10px;font-size:.95rem;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.nbtn.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.nbtn .cnt{background:var(--bad);color:#fff;border-radius:99px;font-size:.75rem;line-height:1;padding:3px 7px;font-weight:700}
+.icon{width:40px;height:40px;border-radius:10px;font-size:1.1rem;color:var(--muted)}
+
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 48px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.panel + .panel,.panel + section,section + section{margin-top:20px}
+h1{font-size:1.5rem;line-height:1.3;font-weight:700}
+h2{font-size:1.15rem;font-weight:700;margin-bottom:10px}
+.muted{color:var(--muted);font-size:.92rem}
+
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--bg);padding:4px;border-radius:12px;margin-top:16px}
+.seg button{padding:10px 4px;border-radius:9px;font-weight:500}
+.seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.hint{margin-top:10px;color:var(--muted);font-size:.93rem;min-height:1.6em}
+.field{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.field .lbl{font-weight:500;margin-right:4px}
+.chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface);font-weight:500}
+.chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.num{width:72px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;text-align:center}
+.btn{padding:12px 20px;border-radius:12px;font-weight:700;border:1.5px solid var(--line);background:var(--surface)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.big{width:100%;margin-top:20px;padding:16px;font-size:1.1rem}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bar-track{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:8px}
+.bar-fill{height:100%;background:var(--star);border-radius:99px}
+.mastery{margin-top:20px;font-size:.93rem;color:var(--muted)}
+
+.stars{display:inline-flex;gap:1px;font-size:1.05rem;color:var(--star-off);white-space:nowrap}
+.stars .on{color:var(--star)}
+
+.list{display:flex;flex-direction:column;gap:6px}
+.qrow{width:100%;display:grid;grid-template-columns:2.2rem 1fr auto;gap:10px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.qrow .no{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.qrow .qt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.95rem;line-height:1.5}
+.qrow .meta{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.badge{font-size:.78rem;background:var(--bad-bg);color:var(--bad);border-radius:99px;padding:1px 8px;font-weight:700;white-space:nowrap}
+
+.prog{display:flex;justify-content:space-between;align-items:center;font-size:.93rem;color:var(--muted)}
+.qcard{margin-top:14px}
+.qcard .stem{font-size:1.2rem;line-height:1.6;font-weight:500;margin-top:8px}
+.qtag{display:flex;gap:10px;align-items:center;font-size:.85rem;color:var(--muted)}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.opt{display:grid;grid-template-columns:2rem 1fr;gap:10px;text-align:left;padding:14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);align-items:start}
+.opt .ltr{width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--bg);color:var(--muted)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel .ltr{background:var(--accent);color:var(--accent-ink)}
+.nav2{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:20px}
+
+.score{text-align:center}
+.score .big{font-size:3.2rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.score p{margin-top:6px}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:16px}
+.filter{display:inline-grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);padding:4px;border-radius:12px;margin:0 0 12px}
+.filter button{padding:8px 16px;border-radius:9px;font-weight:500}
+.filter button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.ritem{background:var(--surface);border:1px solid var(--line);border-left-width:6px;border-radius:12px;padding:14px 16px}
+.ritem.ok{border-left-color:var(--ok)}
+.ritem.bad{border-left-color:var(--bad)}
+.ritem + .ritem{margin-top:10px}
+.rhead{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;font-weight:700}
+.rhead .st.ok{color:var(--ok)} .rhead .st.bad{color:var(--bad)}
+.ritem .stem{margin-top:6px;font-weight:500}
+.ans{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:.95rem}
+.ans.ok{background:var(--ok-bg);color:var(--ok)}
+.ans.bad{background:var(--bad-bg);color:var(--bad)}
+.exp{margin-top:8px;font-size:.92rem;color:var(--muted)}
+.delta{margin-top:8px;font-size:.88rem;display:flex;gap:8px;align-items:center}
+
+.empty{text-align:center;padding:32px 16px;color:var(--muted)}
+.empty .btn{margin-top:16px}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:grid;place-items:center;padding:16px}
+.modal{background:var(--surface);border-radius:16px;padding:20px;max-width:380px;width:100%}
+.modal h3{font-size:1.1rem;margin-bottom:6px}
+.note{margin-top:24px;font-size:.85rem;color:var(--muted)}
+.linkbtn{color:var(--accent);text-decoration:underline;font-size:.85rem;padding:6px 0}
+
+@media (min-width:600px){
+  .wrap{padding-top:24px}
+  .qcard .stem{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .opt,.chip,.btn,.seg button{transition:background-color .12s,border-color .12s}
+}
+</style>
+</head>
+<body>
+<header class="top" id="hdr"></header>
+<main class="wrap" id="app"></main>
+<div id="modal"></div>
+
+<script>
+(function(){
+const Q = [{"id": 1, "q": "RPA流程自動化機器人，比較適合哪一類型工作？", "opts": ["高創意的策略決策", "需要高度創意發想的藝術工作", "全新、無規則的創新研發", "高度重複、具邏輯規則的作業"], "ans": 3, "exp": "RPA 像一個「照規矩做事的軟體機器人」，適合重複、有明確規則的工作；需要創意或沒有規則的事要靠人。"}, {"id": 2, "q": "參與者同時加入多個平台的現象，稱為？", "opts": ["生態圈", "多棲特性", "網絡效應", "包圍覆蓋"], "ans": 1, "exp": "多棲＝同一個人同時在好幾個平台上活動（例如同時用 Uber 和 Grab）。"}, {"id": 3, "q": "Revolut這家數位銀行主要解決用戶的哪一項痛點？", "opts": ["企業融資門檻", "房屋貸款利率太高", "保險理賠速度", "跨國換匯與跨境手續費昂貴"], "ans": 3, "exp": "Revolut 主打出國換匯、跨境轉帳手續費低，解決的是「跨國換匯與手續費昂貴」。"}, {"id": 4, "q": "花旗銀行在臺灣與下列哪一電商平台合作，透過API串接減少客戶重複填寫資料、提升辦卡效率？", "opts": ["PChome", "露天拍賣", "蝦皮購物", "momo購物網"], "ans": 0, "exp": "花旗與 PChome 用 API 串接，直接帶入會員資料，客戶辦卡不必重複填寫。"}, {"id": 5, "q": "Monzo Bank來自哪一個國家？", "opts": ["德國", "英國", "巴西", "美國"], "ans": 1, "exp": "Monzo Bank 是英國的數位銀行。"}, {"id": 6, "q": "機器人理財面臨監理風險議題，下列何者不是課本提及監理議題？", "opts": ["駭客入侵、個資保護議題", "演算法出錯如何管控終止服務", "強制要求投資人一定要獲得正報酬", "業者倒閉時投資人保障機制"], "ans": 2, "exp": "監理關心的是資安、演算法出錯、業者倒閉的保障；沒有任何規定要保證投資人一定賺錢。"}, {"id": 7, "q": "Monzo Bank的「儲蓄罐（Savings Pots）」主要功能為何？", "opts": ["房貸線上申辦", "跨境匯款免手續費", "消費零錢自動四捨五入存進儲蓄目標帳戶", "線上股票買賣"], "ans": 2, "exp": "Savings Pots：消費的零頭自動湊整，存進你設定的儲蓄目標。"}, {"id": 8, "q": "摩根大通COiN合約解析軟體，原本人力每年需要36萬小時作業，使用AI後處理需要的時間變成？", "opts": ["數秒鐘", "36萬小時維持不變", "一個月", "數天"], "ans": 0, "exp": "COiN 把原本 36 萬小時的合約審閱縮短到數秒鐘。"}, {"id": 9, "q": "餘額寶屬於哪一種金融商品？", "opts": ["股票基金", "債券基金", "平衡型基金", "貨幣型基金"], "ans": 3, "exp": "餘額寶把閒錢投入貨幣型基金，風險低、隨時能用，像「會生利息的活錢包」。"}, {"id": 10, "q": "臺灣成功實現開放銀行帳戶整合服務的手機記帳APP為下列何者？", "opts": ["簡單記帳", "記帳城市", "魚記帳", "麻布記帳"], "ans": 3, "exp": "麻布記帳是台灣成功運用開放銀行、整合多家銀行帳戶的記帳 APP。"}, {"id": 11, "q": "平台與傳統價值鏈最大差異，下列敘述正確者為？", "opts": ["平台只從供給端收取收入", "傳統價值鏈成本與收入同時發生在左右兩側", "平台成本與收入同時發生在兩側使用者，必要時還可對其中一方補貼", "平台和傳統價值鏈都是單邊市場"], "ans": 2, "exp": "平台是雙邊市場：兩側使用者都有成本與收入，必要時還能補貼其中一方。"}, {"id": 12, "q": "介於監督式與非監督式之間，少量標記搭配大量未標記資料，是屬於哪一種機器學習類型？", "opts": ["半監督式學習", "強人工智慧", "深度學習", "加強式學習"], "ans": 0, "exp": "半監督式＝少量有標記資料＋大量未標記資料，介於監督與非監督之間。"}, {"id": 13, "q": "阿里巴巴集團由電商平台起家，後續透過支付寶、螞蟻金服跨足線上支付、信用體系等金融服務，此為哪一種平台特性經典案例？", "opts": ["包圍覆蓋", "需求擴築", "多棲特性", "網絡效應"], "ans": 0, "exp": "阿里從電商一路延伸到支付、信用等金融服務，把相鄰領域包起來，稱為包圍覆蓋。"}, {"id": 14, "q": "群眾募資（Crowdfunding）中，「捐贈型」的主要特徵為何？", "opts": ["出資者可預購產品或獲得限量紀念品", "資金提供者不以獲得回饋為目的，多帶公益性質", "投資人定期收取利息並到期收回本金", "投資人獲得被投資公司的股份"], "ans": 1, "exp": "捐贈型：出錢是做公益、不求回饋。預購是回饋型，收利息是借貸型，拿股份是股權型。"}, {"id": 15, "q": "平台為避免參與者多棲、維持使用者忠誠度，常設計補貼策略，下列何者屬於常見補貼方式？", "opts": ["提高會員費用", "價格折扣、免收運費、紅包折價券、集點制度", "強制簽訂獨家合約禁止使用其他平台", "縮減平台服務項目"], "ans": 1, "exp": "補貼＝用折扣、免運、紅包、集點留住用戶；提高費用或強迫獨家都不是補貼。"}, {"id": 16, "q": "螞蟻金服強調的核心技術能力不包含下列哪一項？", "opts": ["人工智慧", "物聯網", "大數據", "區塊鏈"], "ans": 1, "exp": "本題依你指定的答案：物聯網為「不包含」項目。"}, {"id": 17, "q": "群眾募資平台 Kickstarter，專案達成集資門檻後，平台營運費用來源為？", "opts": ["向銀行貸款", "從募資金額抽取部分比例作為平台營運費用", "向政府申請補助", "向發起人收取固定年費"], "ans": 1, "exp": "Kickstarter 在專案達標後，從募得金額抽成作為平台營運費用。"}, {"id": 18, "q": "平台建立的三個關鍵考量要素，不包含下列何者？", "opts": ["員工人數", "需求強度", "毛利空間", "需求頻率"], "ans": 0, "exp": "平台三要素：需求強度、需求頻率、毛利空間；員工人數不是。"}, {"id": 19, "q": "機器人理財多層次微服務架構中，何者負責數據清洗、規格化、儲存處理？", "opts": ["數據轉換層", "表現層", "數據層", "分析計算層"], "ans": 0, "exp": "數據轉換層負責清洗、統一格式、儲存資料，像「備料的廚房」。"}, {"id": 20, "q": "機器人理財面臨挑戰當中，關於客戶風險評估敘述何者正確？", "opts": ["單一式問卷可能過度簡化，無法完整評估客戶完整財務情境", "問卷可以完整得知客戶房地產、其他負債、配偶財務全部資訊", "目前問卷評估已經可以完整涵蓋客戶全部財務狀況", "風險問卷完全不需要再進化改良"], "ans": 0, "exp": "單一問卷太簡化，看不到房產、其他負債、配偶財務等完整狀況。"}, {"id": 21, "q": "下列何者不是臺灣機器人理財規模占整體投信投顧比例偏低的原因？", "opts": ["臺灣完全沒有開放機器人理財法規", "機器人理財仍屬新興業務", "全權委託門檻500萬元，和小資族客群衝突", "投資商品選擇相對國外較少"], "ans": 0, "exp": "台灣已開放機器人理財（2017 年），所以「完全沒開放」不是占比偏低的原因。"}, {"id": 22, "q": "有關傳統保險相較於眾安保險之比較，下列敘述何者正確？", "opts": ["眾安保險開發週期長，組織架構複雜", "眾安保險組織扁平化、開發週期短，可以快速回應市場", "傳統保險可以做到完全依據用戶數據動態定價", "傳統保險大量採用自動線上理賠"], "ans": 1, "exp": "眾安是網路原生保險，組織扁平、開發週期短、反應快；傳統保險相對慢。"}, {"id": 23, "q": "新加坡的 MyInfo 與 Singpass 系統，主要作為下列哪一種用途？", "opts": ["帳戶資訊整合", "支付交易清算", "國家電子身分認證", "信用評分查詢"], "ans": 2, "exp": "MyInfo 與 Singpass 是新加坡的國家電子身分認證與個資授權系統。"}, {"id": 24, "q": "台灣金管會於 2021 年 7 月施行的《電子支付機構管理條例》，其亮點不包含下列哪一項？", "opts": ["電子支付帳戶可跨機構轉帳", "禁止電子支付帳戶內兌換外幣", "可透過電子支付帳戶扣款購買金融商品", "開放信用卡紅利點數與電子支付點數整合"], "ans": 1, "exp": "該條例的亮點之一是電子支付帳戶可兌換外幣，所以「禁止兌換外幣」不是亮點。"}, {"id": 25, "q": "FinTech 3.0 時期（2008 年後）的發展起點主要受下列哪一事件推動？", "opts": ["跨大西洋電報成功鋪設", "第一台 ATM 推出", "全球金融危機引發對傳統銀行的不信任", "台灣光網成立"], "ans": 2, "exp": "FinTech 3.0（2008 年後）起因於金融海嘯，大眾對傳統銀行失去信任。"}, {"id": 26, "q": "越南 Timo Bank 創立何種獨特實體接觸點做為數位銀行服務場域？", "opts": ["車營服務站", "傳統大型銀行分行", "郵局窗口", "Timo Hangout 咖啡廳"], "ans": 3, "exp": "Timo 設立 Timo Hangout 咖啡廳，讓客戶在實體空間接觸數位銀行。"}, {"id": 27, "q": "下列何者為中國騰訊集團旗下的純網路銀行？", "opts": ["Ally Bank", "微眾銀行", "Nubank", "網商銀行"], "ans": 1, "exp": "微眾銀行是騰訊旗下純網銀；網商銀行屬於螞蟻（阿里）體系。"}, {"id": 28, "q": "臺灣金管會於哪一年開放機器人理財（自動化投資顧問服務）？", "opts": ["2015年", "2008年", "2017年", "2021年"], "ans": 2, "exp": "金管會在 2017 年開放機器人理財。"}, {"id": 29, "q": "加強式學習（增強式學習）主要依靠哪個機制訓練模型？", "opts": ["只有標記好的歷史資料", "獎勵與懲罰回饋機制，透過與環境互動學習", "全部使用無標記資料自動分類", "完全依靠人工逐筆手動標記"], "ans": 1, "exp": "加強式學習靠「做對給獎勵、做錯給懲罰」，與環境互動慢慢學，像訓練小狗。"}, {"id": 30, "q": "螞蟻金服 BASIC 戰略中的 B 代表哪一項技術？", "opts": ["商務 Business", "區塊鏈 Blockchain", "銀行 Banking", "品牌 Brand"], "ans": 1, "exp": "BASIC 的 B 是區塊鏈 Blockchain。"}, {"id": 31, "q": "下列哪一間不是國際知名機器人理財公司？", "opts": ["Betterment", "Acorns", "Wealthfront", "台新銀行"], "ans": 3, "exp": "台新銀行是台灣業者；Betterment、Acorns、Wealthfront 才是國際知名機器人理財公司。"}, {"id": 32, "q": "Kaggle平台上大量房價預測模型，會利用眾多房屋條件做預測，此領域多使用何種演算法？", "opts": ["僅依靠加強式學習", "分群 K-means", "迴歸、隨機森林、類神經網路", "卷積神經網路專用"], "ans": 2, "exp": "預測數值（如房價）屬於迴歸類問題，常用迴歸、隨機森林、類神經網路。"}, {"id": 33, "q": "在機器學習流程當中，拿來訓練模型的資料集會稱為？", "opts": ["原始未處理資料", "訓練資料組", "測試資料組", "驗證資料組"], "ans": 1, "exp": "拿來訓練模型的資料叫訓練資料組；測試組用來考模型，驗證組用來調整。"}, {"id": 34, "q": "「應用程式介面」的標準英文縮寫為何？", "opts": ["APT", "APR", "APS", "API"], "ans": 3, "exp": "API＝Application Programming Interface，應用程式介面。"}, {"id": 35, "q": "阿爾發投顧與永豐金證券合作，其投資組合主要使用哪一家的 ETF 商品？", "opts": ["元大投信", "先鋒集團 Vanguard", "貝萊德 BlackRock", "富邦投信"], "ans": 1, "exp": "阿爾發投顧的投資組合主要採用先鋒集團（Vanguard）的 ETF。"}, {"id": 36, "q": "德國 Fidor Bank 的核心創新營運模式為下列何者？", "opts": ["保險概念店", "無人便利商店", "社群金融", "校園分行"], "ans": 2, "exp": "Fidor Bank 的核心是「社群金融」，把銀行服務和社群互動結合。"}, {"id": 37, "q": "Kickstarter 群眾募資平台採用何種集資模式？", "opts": ["股權強制回購", "全有否則全無（All-or-Nothing）", "無條件全額撥款", "債券到期還本付息"], "ans": 1, "exp": "All-or-Nothing：沒達標就全額退款，達標才撥款。"}, {"id": 38, "q": "下列何者是艾倫・圖靈提出，用來評估機器是否具備智慧的著名測試？", "opts": ["圖靈測試", "達特茅斯測試", "強AI測試", "蒙地卡羅測試"], "ans": 0, "exp": "圖靈測試：若人分辨不出對方是機器，就視為機器具備智慧。"}, {"id": 39, "q": "金融科技常用的「ABC 技術」中，「C」代表下列哪一項技術？", "opts": ["雲端運算（Cloud Computing）", "人工智慧（Artificial Intelligence）", "大數據（Big Data）", "生物辨識（Biometrics）"], "ans": 0, "exp": "ABC＝AI（人工智慧）、Big Data（大數據）、Cloud（雲端運算）。"}, {"id": 40, "q": "機器人理財系統的數據層，不會蒐集下列哪一種資料？", "opts": ["使用者私人醫療病歷資料", "財經新聞、網路社群貼文外部資料", "客戶財務背景、交易紀錄", "金融商品市場波動、績效數據"], "ans": 0, "exp": "數據層蒐集財經、客戶財務與市場資料，不會蒐集私人醫療病歷。"}, {"id": 41, "q": "下列何者為純網路銀行最核心的特色？", "opts": ["完全沒有實體分行，全部服務線上完成", "只能辦理外匯業務", "只能服務企業客戶", "大量設立實體分行"], "ans": 0, "exp": "純網銀的核心特色：沒有實體分行，服務全部在線上完成。"}, {"id": 42, "q": "玉山證券與群馥科技合作推出的跨平台證券服務名稱為何？", "opts": ["玉山證券API", "玉山富果帳戶", "玉山開放平台", "玉山數位帳戶"], "ans": 1, "exp": "玉山證券與群馥科技推出「玉山富果帳戶」。"}, {"id": 43, "q": "下列何者不是課本提及人工智慧在金融領域的應用？", "opts": ["手機實體硬體晶片製造", "信用卡盜刷偵測與洗錢防制", "智能客服", "理財機器人"], "ans": 0, "exp": "AI 常用在盜刷偵測、洗錢防制、智能客服、理財機器人；手機晶片製造是硬體，不算。"}, {"id": 44, "q": "比利時的 itsme 專案，主要是開放銀行在哪一領域的應用？", "opts": ["信用評估服務", "帳戶整合服務", "支付啟動服務", "個人電子身分認證"], "ans": 3, "exp": "itsme 是比利時開放銀行在「個人電子身分認證」的應用。"}, {"id": 45, "q": "人工智慧（AI）在金融領域的應用不包含下列哪一項？", "opts": ["透過聊天機器人（Chatbot）回答金融業務諮詢", "利用機器學習分析信用評分", "使用虹膜辨識進行 ATM 提現", "台灣中國信託銀行的 LINE 智能客服「小 C」"], "ans": 2, "exp": "虹膜辨識屬於生物辨識技術，本題視為非 AI 應用。"}, {"id": 46, "q": "相較傳統線性供應鏈，平台將所有參與者納入運作，創造價值績效，此型態稱為？", "opts": ["垂直整合工廠", "生態圈（Ecosystem）", "單邊銷售通路", "批發商體系"], "ans": 1, "exp": "平台把所有參與者納入、一起創造價值的型態，稱為生態圈。"}, {"id": 47, "q": "Grab 能夠在東南亞勝過 Uber 的關鍵因素，課本強調為何？", "opts": ["完全沒有使用大數據", "因地制宜策略，善用平台累積巨量數據分析客製化體驗", "只經營叫車單一業務", "不申請金融相關執照"], "ans": 1, "exp": "Grab 靠因地制宜，並用平台累積的大數據做出客製化體驗。"}, {"id": 48, "q": "摩根大通推出的 COIN 軟體，主要是利用 RPA 流程自動化處理何種作業？", "opts": ["人臉開戶", "股票即時交易", "房價預測", "金融合約文件審查"], "ans": 3, "exp": "COIN 用 RPA 自動審閱金融合約文件。"}, {"id": 49, "q": "台灣行政院推動無現金社會政策，預期哪一年電子支付占民間消費比率達到 90%？", "opts": ["2030 年", "2025 年", "2018 年", "2020 年"], "ans": 1, "exp": "行政院目標：2025 年電子支付占民間消費 90%。"}, {"id": 50, "q": "下列何者不屬於芝麻信用五大評估維度？", "opts": ["行為偏好", "信用歷史", "家庭財產強制申報", "人脈關係"], "ans": 2, "exp": "芝麻信用五大維度：信用歷史、行為偏好、履約能力、身份特質、人脈關係；家庭財產強制申報不在其中。（本題答案已修正，原附件標示為 B）"}];
+const KEY = 'fintech-quiz-v1', TKEY = 'fintech-quiz-theme';
+let store = {stats:{}, prefs:{mode:'seq', count:10, start:1}};
+try{
+  const r = localStorage.getItem(KEY);
+  if(r){ const o = JSON.parse(r);
+    if(o && o.stats) store.stats = o.stats;
+    if(o && o.prefs) Object.assign(store.prefs, o.prefs);
+  }
+}catch(e){}
+try{
+  const t = localStorage.getItem(TKEY);
+  if(t==='light'||t==='dark') document.documentElement.dataset.theme = t;
+}catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const stat = id => store.stats[id] || {streak:0, wrong:0, right:0};
+const getStat = id => (store.stats[id] = store.stats[id] || {streak:0, wrong:0, right:0});
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const LET = 'ABCD';
+
+let S = {view:'home', session:null, result:null, filter:'all', modal:null};
+
+function stars(n){
+  return '<span class="stars" role="img" aria-label="連續答對 '+n+' 次，'+n+' 顆星">' +
+    [0,1,2].map(i => '<span class="'+(i<n?'on':'')+'">★</span>').join('') + '</span>';
+}
+function wrongPool(){
+  const all = Q.filter(q => stat(q.id).wrong > 0);
+  const active = all.filter(q => stat(q.id).streak < 3);
+  return active.length ? active : all;
+}
+function masteredCount(){ return Q.filter(q => stat(q.id).streak >= 3).length; }
+function wrongCount(){ return Q.filter(q => stat(q.id).wrong > 0).length; }
+function poolSize(mode){
+  if(mode==='seq') return Q.length - clamp(+store.prefs.start||1, 1, Q.length) + 1;
+  if(mode==='rand') return Q.length;
+  return wrongPool().length;
+}
+function shuffle(a){
+  a = a.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+  return a;
+}
+// 加權抽樣：三星題權重 1/3，較少被抽到
+function wsample(list, n){
+  return list.map(q => {
+    const w = stat(q.id).streak >= 3 ? 1/3 : 1;
+    return {q, k: Math.pow(Math.random(), 1/w)};
+  }).sort((a,b) => b.k - a.k).slice(0, n).map(x => x.q);
+}
+
+function startSession(mode, ids){
+  S.session = {mode, idx:0, items: ids.map(id => ({id, order: shuffle([0,1,2,3]), pick:null}))};
+  S.view = 'quiz'; S.modal = null;
+  render(); window.scrollTo(0,0);
+}
+function startFromPrefs(mode){
+  const p = store.prefs;
+  const n = p.count==='all' ? Infinity : +p.count;
+  let ids;
+  if(mode==='seq'){
+    const st = clamp(+p.start||1, 1, Q.length);
+    ids = Q.filter(q => q.id >= st).slice(0, n).map(q => q.id);
+  } else if(mode==='rand'){
+    ids = wsample(Q, Math.min(n, Q.length)).map(q => q.id);
+  } else {
+    const pool = wrongPool();
+    if(!pool.length) return;
+    ids = wsample(pool, Math.min(n, pool.length)).map(q => q.id);
+  }
+  startSession(mode, ids);
+}
+
+function finish(){
+  const s = S.session;
+  const items = s.items.map(it => {
+    const q = Q[it.id-1];
+    const ok = it.order[it.pick] === q.ans;
+    const st = getStat(it.id);
+    const before = st.streak;
+    if(ok){ st.streak = Math.min(3, st.streak+1); st.right++; }
+    else { st.streak = 0; st.wrong++; }
+    return {it, q, ok, before, after: st.streak};
+  });
+  save();
+  S.result = {mode: s.mode, ids: s.items.map(i => i.id), items};
+  S.view = 'result'; S.filter = 'all';
+  render(); window.scrollTo(0,0);
+}
+
+function answeredCount(){ return S.session ? S.session.items.filter(i => i.pick!==null).length : 0; }
+function go(view){
+  if(S.view==='quiz' && answeredCount()>0 && view!=='quiz'){ S.modal = {target:view}; renderModal(); return; }
+  S.view = view; S.modal = null; render(); window.scrollTo(0,0);
+}
+
+function renderHeader(){
+  const v = S.view;
+  document.getElementById('hdr').innerHTML =
+    '<div class="bar"><button class="brand" data-act="home">金融科技題庫</button><nav>' +
+    '<button class="nbtn '+(v==='home'?'on':'')+'" data-act="home">題庫</button>' +
+    '<button class="nbtn '+(v==='wrongview'?'on':'')+'" data-act="wrongview">錯題專區' +
+      (wrongCount()?'<span class="cnt">'+wrongCount()+'</span>':'') + '</button>' +
+    '<button class="icon" data-act="theme" aria-label="切換深淺色模式">◐</button>' +
+    '</nav></div>';
+}
+
+function chips(mode){
+  const p = store.prefs, size = poolSize(mode);
+  return [10,20,30,'all'].map(c => {
+    const label = c==='all' ? '全部（'+size+'）' : c;
+    return '<button class="chip '+(String(p.count)===String(c)?'on':'')+'" data-act="count" data-v="'+c+'">'+label+'</button>';
+  }).join('');
+}
+
+function viewHome(){
+  const p = store.prefs, mode = p.mode;
+  const wp = wrongPool().length;
+  const hints = {
+    seq:'照題號順序出題，可以指定從第幾題開始。',
+    rand:'題目與選項都會打亂；連續答對 3 次（三顆星）的題目比較少出現。',
+    wrong: wp ? '只練答錯過、還沒熟練的題目（共 '+wp+' 題）。' : '目前沒有錯題。先做幾題，答錯的會自動收進來。'
+  };
+  const m = masteredCount();
+  const rows = Q.map(q => {
+    const st = stat(q.id);
+    return '<li><button class="qrow" data-act="one" data-id="'+q.id+'">' +
+      '<span class="no">'+q.id+'</span><span class="qt">'+esc(q.q)+'</span>' +
+      '<span class="meta">'+stars(st.streak)+(st.wrong?'<span class="badge">錯 '+st.wrong+' 次</span>':'')+'</span></button></li>';
+  }).join('');
+  return '<section class="panel">' +
+    '<h1>今天想怎麼練？</h1>' +
+    '<div class="seg" role="group" aria-label="練習方式">' +
+      '<button class="'+(mode==='seq'?'on':'')+'" data-act="mode" data-v="seq">依序</button>' +
+      '<button class="'+(mode==='rand'?'on':'')+'" data-act="mode" data-v="rand">全部隨機</button>' +
+      '<button class="'+(mode==='wrong'?'on':'')+'" data-act="mode" data-v="wrong">只練錯題</button>' +
+    '</div>' +
+    '<p class="hint">'+hints[mode]+'</p>' +
+    '<div class="field"><span class="lbl">題數</span>'+chips(mode)+'</div>' +
+    (mode==='seq' ? '<div class="field"><label for="startNo" class="lbl">從第</label><input class="num" id="startNo" type="number" inputmode="numeric" min="1" max="'+Q.length+'" value="'+clamp(+p.start||1,1,Q.length)+'"><span>題開始</span></div>' : '') +
+    '<button class="btn primary big" data-act="start"'+(mode==='wrong'&&!wp?' disabled':'')+'>開始練習</button>' +
+    '<div class="mastery">已拿到三顆星的題目：'+m+' ／ '+Q.length+
+      '<div class="bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="'+Q.length+'" aria-valuenow="'+m+'"><div class="bar-fill" style="width:'+(m/Q.length*100)+'%"></div></div></div>' +
+    '</section>' +
+    '<section><h2>題庫列表（共 '+Q.length+' 題）</h2><p class="muted" style="margin-bottom:10px">點任何一題可以單獨練習。星星＝連續答對次數，答錯歸零。</p><ol class="list">'+rows+'</ol>' +
+    '<p class="note">作答紀錄只存在這個瀏覽器，別人看不到；換裝置或清除瀏覽資料就不會帶過去。</p>' +
+    '<button class="linkbtn" data-act="resetask">清除我的所有紀錄</button></section>';
+}
+
+function viewWrong(){
+  const list = Q.filter(q => stat(q.id).wrong > 0).sort((a,b) => stat(b.id).wrong - stat(a.id).wrong || a.id - b.id);
+  if(!list.length){
+    return '<section class="panel empty"><h1>錯題專區</h1><p style="margin-top:8px">還沒有錯題。去做幾題，答錯的會自動出現在這裡。</p><button class="btn primary" data-act="home">回題庫開始練習</button></section>';
+  }
+  const allMastered = list.every(q => stat(q.id).streak >= 3);
+  const rows = list.map(q => {
+    const st = stat(q.id);
+    return '<li><button class="qrow" data-act="one" data-id="'+q.id+'">' +
+      '<span class="no">'+q.id+'</span><span class="qt">'+esc(q.q)+'</span>' +
+      '<span class="meta">'+stars(st.streak)+'<span class="badge">錯 '+st.wrong+' 次</span></span></button></li>';
+  }).join('');
+  return '<section class="panel"><h1>錯題專區</h1>' +
+    '<p class="hint">共 '+list.length+' 題答錯過，錯最多次的排最前面。'+(allMastered?'目前每題都已拿到三顆星，可以再複習一輪。':'已拿到三顆星的題目會先休息。')+'</p>' +
+    '<div class="field"><span class="lbl">題數</span>'+chips('wrong')+'</div>' +
+    '<button class="btn primary big" data-act="startwrong">練習這些錯題</button></section>' +
+    '<section><ol class="list">'+rows+'</ol></section>';
+}
+
+function viewQuiz(){
+  const s = S.session, it = s.items[s.idx], q = Q[it.id-1], n = s.items.length;
+  const last = s.idx === n-1;
+  const opts = it.order.map((oi,k) =>
+    '<button class="opt '+(it.pick===k?'sel':'')+'" data-act="pick" data-k="'+k+'" aria-pressed="'+(it.pick===k)+'">' +
+    '<span class="ltr">'+LET[k]+'</span><span>'+esc(q.opts[oi])+'</span></button>').join('');
+  return '<section class="panel">' +
+    '<div class="prog"><span>第 '+(s.idx+1)+' ／ '+n+' 題</span><span>已作答 '+answeredCount()+'</span></div>' +
+    '<div class="bar-track"><div class="bar-fill" style="background:var(--accent);width:'+((s.idx+1)/n*100)+'%"></div></div>' +
+    '<div class="qcard"><div class="qtag"><span>題庫第 '+q.id+' 題</span>'+stars(stat(q.id).streak)+'</div>' +
+    '<p class="stem">'+esc(q.q)+'</p></div>' +
+    '<div class="opts">'+opts+'</div>' +
+    '<div class="nav2"><button class="btn" data-act="prev"'+(s.idx===0?' disabled':'')+'>上一題</button>' +
+    '<button class="btn primary" data-act="next"'+(it.pick===null?' disabled':'')+'>'+(last?'交卷看結果':'下一題')+'</button></div>' +
+    '<p class="muted" style="margin-top:12px;text-align:center">全部作答完才會顯示對錯與解析。</p>' +
+    '</section>';
+}
+
+function viewResult(){
+  const r = S.result, total = r.items.length;
+  const right = r.items.filter(x => x.ok).length;
+  const pct = right/total;
+  const msg = pct>=.8 ? '掌握得不錯！' : pct>=.5 ? '再練一兩輪會更穩。' : '別擔心，錯題已經記下來，下一輪專攻。';
+  const shown = r.items.map((x,i) => Object.assign({n:i+1}, x)).filter(x => S.filter==='all' || !x.ok);
+  const body = shown.map(x => {
+    const q = x.q, it = x.it;
+    const mine = q.opts[it.order[it.pick]], correct = q.opts[q.ans];
+    let delta;
+    if(x.ok) delta = x.after>=3 && x.before<3 ? '連續答對 3 次，拿到三顆星，之後比較少出現。' : '連續答對 '+x.after+' 次';
+    else delta = '連續答對歸零，已收進錯題專區。';
+    return '<div class="ritem '+(x.ok?'ok':'bad')+'">' +
+      '<div class="rhead"><span>第 '+x.n+' 題（題庫第 '+q.id+' 題）</span><span class="st '+(x.ok?'ok':'bad')+'">'+(x.ok?'✓ 答對':'✗ 答錯')+'</span></div>' +
+      '<p class="stem">'+esc(q.q)+'</p>' +
+      (x.ok ? '' : '<div class="ans bad">你的答案：<b>'+esc(mine)+'</b></div>') +
+      '<div class="ans ok">正確答案：<b>'+esc(correct)+'</b></div>' +
+      '<p class="exp">'+esc(q.exp)+'</p>' +
+      '<div class="delta">'+stars(x.after)+'<span class="muted">'+delta+'</span></div></div>';
+  }).join('');
+  const wrongN = total - right;
+  return '<section class="panel score"><p class="muted">練習完成</p><div class="big">'+right+' ／ '+total+'</div><p>'+msg+'</p>' +
+    '<div class="acts"><button class="btn primary" data-act="again">再練一次</button>' +
+    '<button class="btn" data-act="wrongview">錯題專區</button>' +
+    '<button class="btn" data-act="home">回首頁</button></div></section>' +
+    '<section><div class="filter" role="group" aria-label="篩選">' +
+    '<button class="'+(S.filter==='all'?'on':'')+'" data-act="filter" data-v="all">全部 '+total+' 題</button>' +
+    '<button class="'+(S.filter==='wrong'?'on':'')+'" data-act="filter" data-v="wrong">只看錯題 '+wrongN+'</button></div>' +
+    (body || '<div class="panel empty">這次全部答對，沒有錯題。</div>') + '</section>';
+}
+
+function renderModal(){
+  const m = S.modal, el = document.getElementById('modal');
+  if(!m){ el.innerHTML = ''; return; }
+  if(m.target==='reset'){
+    el.innerHTML = '<div class="scrim"><div class="modal" role="dialog" aria-modal="true"><h3>清除所有紀錄？</h3>' +
+      '<p class="muted">星星、錯題與錯誤次數都會歸零，無法復原。</p>' +
+      '<div class="acts"><button class="btn" data-act="closemodal">保留紀錄</button><button class="btn primary" data-act="doreset">全部清除</button></div></div></div>';
+  } else {
+    el.innerHTML = '<div class="scrim"><div class="modal" role="dialog" aria-modal="true"><h3>離開這次練習？</h3>' +
+      '<p class="muted">現在離開，這次的作答不會被記錄。</p>' +
+      '<div class="acts"><button class="btn" data-act="closemodal">繼續作答</button><button class="btn primary" data-act="leave">離開</button></div></div></div>';
+  }
+}
+
+function render(){
+  renderHeader();
+  const app = document.getElementById('app');
+  app.innerHTML = S.view==='home' ? viewHome() : S.view==='wrongview' ? viewWrong() : S.view==='quiz' ? viewQuiz() : viewResult();
+  renderModal();
+}
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if(!b || b.disabled) return;
+  const a = b.dataset.act;
+  if(a==='home') go('home');
+  else if(a==='wrongview') go('wrongview');
+  else if(a==='theme'){
+    const root = document.documentElement;
+    const dark = root.dataset.theme ? root.dataset.theme==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try{ localStorage.setItem(TKEY, root.dataset.theme); }catch(err){}
+  }
+  else if(a==='mode'){ store.prefs.mode = b.dataset.v; save(); render(); }
+  else if(a==='count'){ store.prefs.count = b.dataset.v==='all' ? 'all' : +b.dataset.v; save(); render(); }
+  else if(a==='start'){
+    const inp = document.getElementById('startNo');
+    if(inp){ store.prefs.start = clamp(parseInt(inp.value,10)||1, 1, Q.length); }
+    save(); startFromPrefs(store.prefs.mode);
+  }
+  else if(a==='startwrong'){ startFromPrefs('wrong'); }
+  else if(a==='one'){ startSession('one', [+b.dataset.id]); }
+  else if(a==='pick'){ S.session.items[S.session.idx].pick = +b.dataset.k; render(); }
+  else if(a==='prev'){ if(S.session.idx>0){ S.session.idx--; render(); window.scrollTo(0,0);} }
+  else if(a==='next'){
+    const s = S.session;
+    if(s.items[s.idx].pick===null) return;
+    if(s.idx < s.items.length-1){ s.idx++; render(); window.scrollTo(0,0); } else finish();
+  }
+  else if(a==='filter'){ S.filter = b.dataset.v; render(); }
+  else if(a==='again'){
+    const r = S.result;
+    if(r.mode==='one') startSession('one', r.ids); else startFromPrefs(r.mode);
+  }
+  else if(a==='closemodal'){ S.modal = null; renderModal(); }
+  else if(a==='leave'){ const t = S.modal.target; S.view = t; S.modal = null; S.session = null; render(); window.scrollTo(0,0); }
+  else if(a==='resetask'){ S.modal = {target:'reset'}; renderModal(); }
+  else if(a==='doreset'){ store.stats = {}; save(); S.modal = null; render(); }
+});
+document.addEventListener('change', e => {
+  if(e.target.id==='startNo'){
+    store.prefs.start = clamp(parseInt(e.target.value,10)||1, 1, Q.length);
+    save(); render();
+  }
+});
+document.addEventListener('keydown', e => {
+  if(S.view!=='quiz' || S.modal) return;
+  if(e.target.tagName==='INPUT') return;
+  const s = S.session, it = s.items[s.idx];
+  const map = {'1':0,'2':1,'3':2,'4':3,'a':0,'b':1,'c':2,'d':3,'A':0,'B':1,'C':2,'D':3};
+  if(e.key in map){ it.pick = map[e.key]; render(); }
+  else if((e.key==='Enter' || e.key==='ArrowRight') && it.pick!==null && e.target.tagName!=='BUTTON'){
+    if(s.idx < s.items.length-1){ s.idx++; render(); window.scrollTo(0,0); } else finish();
+  }
+  else if(e.key==='ArrowLeft' && s.idx>0){ s.idx--; render(); }
+});
+
+render();
+})();
+</script>
+</body>
+</html>
